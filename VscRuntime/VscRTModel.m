@@ -10,21 +10,11 @@
 
 void DBLog(NSString *format, ...){
 #ifdef DEBUG
-    if (showLog) {
-        NSMutableArray *array = [NSMutableArray arrayWithCapacity:0];
-        NSString *arg = nil;
+    if (showLog && format) {
         va_list argumentList;
         va_start(argumentList, format);
-        
-        while ((arg = va_arg(argumentList, id))) {
-            [array addObject:arg];
-        }
-        va_end(argumentList);
-        for (id objc in array) {
-            NSRange range = [format rangeOfString:@"%@"];
-            format = [format stringByReplacingOccurrencesOfString:@"%@" withString:[objc description] options:NSCaseInsensitiveSearch range:range];
-        }
-        NSLog(@"%@",format);
+		NSString *finalFormat = [[NSString alloc] initWithFormat:format arguments:argumentList];
+		NSLog(@"%@", finalFormat);
     }
 #endif
 }
